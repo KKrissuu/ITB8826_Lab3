@@ -1,0 +1,80 @@
+plugins {
+  id "java"
+}
+
+defaultTasks 'clean', 'test'
+
+sourceSets {
+  main {
+    java {srcDir 'src'}
+    resources {srcDir 'src'}
+  }
+  test {
+    java {srcDir 'test'}
+    resources {srcDir 'test'}
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.hamcrest:hamcrest-all:1.3'
+  testCompile 'com.codeborne:selenide:4.14.2'
+  testCompile('org.seleniumhq.selenium:selenium-safari-driver:3.14.0') { transitive = false }
+  testCompile('org.seleniumhq.selenium:htmlunit-driver:2.33.0')
+  testCompile('com.codeborne:phantomjsdriver:1.4.4') { transitive = false }
+}
+
+task libs(type: Sync) {
+  from configurations.testCompile
+  into "$buildDir/lib"
+}
+
+classes.dependsOn libs
+
+[compileJava, compileTestJava]*.options.collect {options -> options.encoding = 'UTF-8'}
+[compileJava, compileTestJava]*.options.collect {options -> options.debug = true}
+
+tasks.withType(Test).all { testTask ->
+  testTask.systemProperties = [
+    'file.encoding': 'UTF-8',
+    'BUILD_URL': System.getenv()['BUILD_URL']
+  ]
+  testTask.testLogging.showStandardStreams = true
+  testTask.exclude 'org/selenide/examples/google/classic_page_object/**/*'
+  testTask.outputs.upToDateWhen { false }
+}
+
+task chrome(type: Test) {
+  systemProperties['selenide.browser'] = 'chrome'
+  systemProperties['selenide.headless'] = 'true'
+}
+
+task firefox(type: Test) {
+  systemProperties['selenide.browser'] = 'firefox'
+  systemProperties['selenide.headless'] = 'true'
+}
+
+task ie(type: Test) {
+  systemProperties['selenide.browser'] = 'ie'
+}
+
+task edge(type: Test) {
+  systemProperties['selenide.browser'] = 'edge'
+}
+
+task htmlunit(type: Test) {
+  systemProperties['selenide.browser'] = 'htmlunit'
+}
+
+task phantomjs(type: Test) {
+  systemProperties['selenide.browser'] = 'phantomjs'
+}
+
+// You must enable the 'Allow Remote Automation' option in Safari's Develop menu to control Safari via WebDriver.
+task safari(type: Test) {
+  systemProperties['selenide.browser'] = 'safari'
+}
