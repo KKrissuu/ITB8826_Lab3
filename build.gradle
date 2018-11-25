@@ -58,6 +58,7 @@ task firefox(type: Test) {
   systemProperties['selenide.headless'] = 'true'
 }
 
+
 task ie(type: Test) {
   systemProperties['selenide.browser'] = 'ie'
 }
