@@ -32,10 +32,15 @@ public class AuthenticationPage {
     }
 
     public AuthenticationPage loginWithDefaultUser(){
-        insertUsername("kasutajanimi");
-        insertPassword("parool");
+        insertUsername("E-Horticom@horticom.ee");
+        insertPassword("lillelaps");
         loginButton.click();
         userDataBox.should(Condition.matchesText("Tere tulemast"));
+        return this;
+    }
+
+    public AuthenticationPage logOut(){
+        logInAndOutButton.should(Condition.matchesText("Logi Välja")).click();
         return this;
     }
 

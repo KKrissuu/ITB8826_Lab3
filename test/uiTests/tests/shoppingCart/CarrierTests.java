@@ -2,6 +2,7 @@ package uiTests.tests.shoppingCart;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,6 +33,11 @@ public class CarrierTests {
         mainPage.cartButton.click();
         shoppingCartPage.heading.waitUntil(Condition.exist, 12000);
         shoppingCartPage.cancelOrderButton.scrollTo().click();
+    }
+
+    @AfterClass
+    public static void logOut(){
+        authenticationPage.logOut();
     }
 
     @Test

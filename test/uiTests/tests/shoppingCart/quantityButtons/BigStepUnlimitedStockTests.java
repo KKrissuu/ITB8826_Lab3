@@ -1,6 +1,7 @@
 package uiTests.tests.shoppingCart.quantityButtons;
 
 import com.codeborne.selenide.Condition;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,6 +38,11 @@ public class BigStepUnlimitedStockTests {
     @Before
     public void resetQuantity(){
         shoppingCartPage.setAmount("275");
+    }
+
+    @AfterClass
+    public static void logOut(){
+        authenticationPage.logOut();
     }
 
     @Test
